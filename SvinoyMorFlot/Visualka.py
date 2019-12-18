@@ -19,6 +19,20 @@ svin2_pos = (400, 600)
 svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
 svins2_rotate = []
 svins2_pos_num = 0
+rotated_svin2 = pygame.transform.rotate(svin2, 0)
+rotated_svin2_bool = False
+angle_svin2 = 0  # градусы поворота свиньи
+
+
+svin3 = pygame.image.load('images/Troinoi_svin.jpg')
+svin3_pos = (450, 600)
+svins3_pos = [svin2_pos, svin2_pos, svin2_pos]
+svins3_rotate = []
+svins3_pos_num = 0
+rotated_svin3 = pygame.transform.rotate(svin3, 0)
+rotated_svin3_bool = False
+angle_svin3 = 0  # градусы поворота свиньи
+
 
 clock = pygame.time.Clock()
 run = True
@@ -61,11 +75,6 @@ doMove = False
 #             if svins_pos_num < max_num:
 #                 svins_pos_num += 1
 
-angle = 0  # градусы поворота свиньи
-rotated_svin2 = pygame.transform.rotate(svin2, 0)
-
-rotated_svin2_bool = False
-
 while run:
     pygame.time.delay(100)
 
@@ -81,6 +90,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        # одинарные свиньи
         if svins1_pos_num < 4:
             # if svins1_pos_num == 4:
             #     break
@@ -111,6 +121,7 @@ while run:
                 if svins1_pos_num == 4:
                     continue
 
+        # двойные свиньи
         if (svins1_pos_num == 4) and (svins2_pos_num < 3):
             # if svins2_pos_num == 3:
             #     break
@@ -119,11 +130,11 @@ while run:
                     doMove = True
                     up_after_down = False
                 elif event.button == 3:
-                    if angle == 360:
-                        angle = 90
+                    if angle_svin2 == 360:
+                        angle_svin2 = 90
                     else:
-                        angle += 90
-                    rotated_svin2 = pygame.transform.rotate(svin2, angle)
+                        angle_svin2 += 90
+                    rotated_svin2 = pygame.transform.rotate(svin2, angle_svin2)
                     rotated_svin2_bool = True
             if event.type == pygame.MOUSEBUTTONUP:
                 doMove = False
@@ -141,10 +152,10 @@ while run:
                 column = (end_pos[0] - 140) // (WIDTH + MARGIN)
                 row = (end_pos[1] - 200) // (HEIGHT + MARGIN)
                 # Set that location to one
-                if angle % 180 == 0 or angle % 360 == 0:
+                if angle_svin2 % 180 == 0 or angle_svin2 % 360 == 0:
                     player_one[row][column] = 1
                     player_one[row][column+1] = 1
-                elif angle % 90 == 0 or angle % 270 == 0:
+                elif angle_svin2 % 90 == 0 or angle_svin2 % 270 == 0:
                     player_one[row][column] = 1
                     player_one[row + 1][column] = 1
                 svin2_mass.append(rotated_svin2)
@@ -158,6 +169,55 @@ while run:
                 svins2_pos[svins2_pos_num] = (1100, 0)
                 if svins2_pos_num < 3:
                     svins2_pos_num += 1
+
+        # тройные свиньи
+        if (svins2_pos_num == 3) and (svins3_pos_num < 2):
+            # if svins2_pos_num == 3:
+            #     break
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # левая кнопка мыши
+                    doMove = True
+                    up_after_down = False
+                elif event.button == 3:
+                    if angle_svin3 == 360:
+                        angle_svin3 = 90
+                    else:
+                        angle_svin3 += 90
+                    rotated_svin3 = pygame.transform.rotate(svin2, angle_svin3)
+                    rotated_svin3_bool = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                doMove = False
+                if event.button == 1:
+                    up_after_down = True
+
+            if event.type == pygame.MOUSEMOTION and doMove:
+                svins3_pos[svins3_pos_num] = event.pos
+
+            if up_after_down:
+                svin3_mass = []
+                end_pos = event.pos
+                # User clicks the mouse. Get the position
+                # Change the x/y screen coordinates to grid coordinates
+                column = (end_pos[0] - 140) // (WIDTH + MARGIN)
+                row = (end_pos[1] - 200) // (HEIGHT + MARGIN)
+                # Set that location to one
+                if angle_svin3 % 180 == 0 or angle_svin3 % 360 == 0:
+                    player_one[row][column] = 1
+                    player_one[row][column+1] = 1
+                elif angle_svin3 % 90 == 0 or angle_svin3 % 270 == 0:
+                    player_one[row][column] = 1
+                    player_one[row + 1][column] = 1
+                svin3_mass.append(rotated_svin2)
+                end_pos = [(MARGIN + WIDTH) * column + MARGIN + 141, (MARGIN + HEIGHT) * row + MARGIN + 201, WIDTH,
+                           HEIGHT]
+                svin3_mass.append(end_pos)
+                svins3_rotate.append(svin3_mass)
+
+                print("Click ", end_pos, "Grid coordinates: ", row, column)
+                # modules.show_matrix(player_one)
+                svins3_pos[svins3_pos_num] = (1100, 0)
+                if svins3_pos_num < 2:
+                    svins3_pos_num += 1
 
 
     color_line = [80, 80, 80]
@@ -207,6 +267,18 @@ while run:
     else:
         if svins2_pos_num < 3:
             screen.blit(rotated_svin2, svins2_pos[svins2_pos_num])
+            pygame.display.update()
+
+    for i in range(svins2_pos_num):
+        screen.blit(svins2_rotate[i][0], svins2_rotate[i][1])
+
+    if rotated_svin3_bool == False:
+        for i in range(3):
+            screen.blit(svin3, svins3_pos[i])
+            pygame.display.update()
+    else:
+        if svins3_pos_num < 3:
+            screen.blit(rotated_svin3, svins3_pos[svins3_pos_num])
             pygame.display.update()
 
 
