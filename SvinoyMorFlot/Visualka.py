@@ -1,18 +1,13 @@
 import pygame
-<<<<<<< Updated upstream
-=======
 import modules
 
 player_one = []
 modules.zer_matrix(player_one)
->>>>>>> Stashed changes
 
 pygame.init()
 
 screen = pygame.display.set_mode([1000, 700])
 pygame.display.set_caption("MorskoyBoy")
-<<<<<<< Updated upstream
-=======
 
 svin1 = pygame.image.load('images/Odinarni_svin.jpg')
 svin1_pos = (350, 600)
@@ -24,7 +19,6 @@ svin2_pos = (400, 600)
 svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
 svins2_pos_num = 0
 
->>>>>>> Stashed changes
 clock = pygame.time.Clock()
 run = True
 
@@ -73,11 +67,9 @@ rotated_svin2_bool = False
 while run:
     pygame.time.delay(100)
 
-<<<<<<< Updated upstream
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-=======
     WIDTH = 18
     HEIGHT = 18
     MARGIN = 2
@@ -158,7 +150,6 @@ while run:
 
 
     color_line = [80, 80, 80]
->>>>>>> Stashed changes
 
     screen.fill([255, 255, 255])
     for y_offset in range(0, 200, 20):
@@ -167,18 +158,10 @@ while run:
     pygame.draw.line(screen, [80, 80, 80], [140, 400], [340, 400], 2)
     pygame.draw.line(screen, [80, 80, 80], [340, 200], [340, 400], 2)
     for y_offset in range(0, 200, 20):
-<<<<<<< Updated upstream
         pygame.draw.line(screen, [80, 80, 80], [660, 200 + y_offset], [860, 200 + y_offset], 2)
         pygame.draw.line(screen, [80, 80, 80], [660 + y_offset, 200], [660 + y_offset, 400], 2)
     pygame.draw.line(screen, [80, 80, 80], [660, 400], [860, 400], 2)
     pygame.draw.line(screen, [80, 80, 80], [860, 200], [860, 400], 2)
-
-=======
-        pygame.draw.line(screen, color_line, [660, 200 + y_offset], [860, 200 + y_offset], 2)
-        pygame.draw.line(screen, color_line, [660 + y_offset, 200], [660 + y_offset, 400], 2)
-    pygame.draw.line(screen, color_line, [660, 400], [860, 400], 2)
-    pygame.draw.line(screen, color_line, [860, 200], [860, 400], 2)
-
 
     for row in range(10):
         for column in range(10):
@@ -215,8 +198,6 @@ while run:
             pygame.display.update()
 
 
-
->>>>>>> Stashed changes
     pygame.display.update()
     clock.tick(60)
 
