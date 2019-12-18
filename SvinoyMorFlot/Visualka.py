@@ -67,9 +67,7 @@ rotated_svin2_bool = False
 while run:
     pygame.time.delay(100)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+    
     WIDTH = 18
     HEIGHT = 18
     MARGIN = 2
