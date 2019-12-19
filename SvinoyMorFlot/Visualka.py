@@ -6,21 +6,21 @@ modules.zer_matrix(player_one)
 
 pygame.init()
 
-screen = pygame.display.set_mode([1000, 700])
-pygame.display.set_caption("MorskoyBoy")
+screen = pygame.display.set_mode([1000, 700])  # создание окна
+pygame.display.set_caption("MorskoyBoy")  # название окна (отображается сверху)
 
 svin1 = pygame.image.load('images/Odinarni_svin.jpg')
-svin1_pos = (350, 600)
-svins1_pos = [svin1_pos, svin1_pos, svin1_pos, svin1_pos]
-svins1_pos_num = 0
+svin1_pos = (350, 600)  # координаты свинки
+svins1_pos = [svin1_pos, svin1_pos, svin1_pos, svin1_pos]  # массив со свиньями
+svins1_pos_num = 0  # кол-во уже поставленных на поле свиней
 
 svin2 = pygame.image.load('images/Dvoinoi_svin.jpg')
 svin2_pos = (400, 600)
 svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
-svins2_rotate = []
+svins2_rotate = []  #
 svins2_pos_num = 0
-rotated_svin2 = pygame.transform.rotate(svin2, 0)
-rotated_svin2_bool = False
+rotated_svin2 = pygame.transform.rotate(svin2, 0)  # переменная с поворотом свиньи (по дефолту 0 градусов)
+rotated_svin2_bool = False  # показывает, повернута ли свинья
 angle_svin2 = 0  # градусы поворота свиньи
 
 
@@ -42,14 +42,14 @@ rotated_svin4 = pygame.transform.rotate(svin3, 0)
 rotated_svin4_bool = False
 angle_svin4 = 0  # градусы поворота свиньи
 
-player_one_ready = False
+player_one_ready = False  # если тру - то матрица закрывается (после расстановки всех свиней первым игроком)
 
 clock = pygame.time.Clock()
-run = True
+run = True  # заставляет главный цикл игры работать (если фолс, то игра вырубается)
 
-doMove = False
+doMove = False  # переменная, отвечающая за перемещение мыши
 
-def check_around(matrix, row, col):
+def check_around(matrix, row, col):  # функция, которая окружает свинку нулями, чтобы нельзя было ставить рядом других свиней
     if row - 1 >= 0 and col - 1 >= 0:
         if matrix[row - 1][col - 1] != 1:
             matrix[row - 1][col - 1] = 0
@@ -75,10 +75,10 @@ def check_around(matrix, row, col):
         if matrix[row][col - 1] != 1:
             matrix[row][col - 1] = 0
 
-while run:
-    pygame.time.delay(100)
+while run:  # основной цикл игры
+    pygame.time.delay(100)  # это вроде как кол-во кадров в сек (а может и нет, я не помню сори)
 
-
+    # размер клеточек и марджин - толщина полосочки
     WIDTH = 18
     HEIGHT = 18
     MARGIN = 2
@@ -86,39 +86,37 @@ while run:
     up_after_down = False
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT:  # если нажимаешь на крестик, игра закрывается (без этого условия на крестик не закроется)
             run = False
 
         # одинарные свиньи
         if svins1_pos_num < 4:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:  # кнопка мыши нажата
                 if event.button == 1:  # левая кнопка мыши
                     doMove = True
-                    up_after_down = False
-            if event.type == pygame.MOUSEBUTTONUP:
-                doMove = False
+                    up_after_down = False  # для того, чтобы следующее условие выполнилось только после нажатия кнопки мышки
+            if event.type == pygame.MOUSEBUTTONUP:  # кнопка мышки не нажата (или отпущена)
+                doMove = False  # следование свинки за мышкой прекращается
                 up_after_down = True
 
-            if event.type == pygame.MOUSEMOTION and doMove:
+            if event.type == pygame.MOUSEMOTION and doMove:  # следование свинки за мышкой
                 svins1_pos[svins1_pos_num] = event.pos
 
-            if up_after_down:
-                end_pos = event.pos
-                # User clicks the mouse. Get the position
-                # Change the x/y screen coordinates to grid coordinates
-                column = (end_pos[0] - 140) // (WIDTH + MARGIN)
-                row = (end_pos[1] - 200) // (HEIGHT + MARGIN)
+            if up_after_down:  # после того, кам мы нажали и после отпустили кнопку мыши
+                end_pos = event.pos  # позия мышки, в которой мы отжали кнопку
+                column = (end_pos[0] - 140) // (WIDTH + MARGIN)  # вычисление столбца матрицы по последней координате мышки
+                row = (end_pos[1] - 200) // (HEIGHT + MARGIN)  # вычисление строки матрицы по последней координате мышки
                 # Set that location to one
-                if player_one[row][column] != 1 and player_one[row][column] != 0:
+                if player_one[row][column] != 1 and player_one[row][column] != 0:  # не выполнится, если на этом месте уже стоит винка или там стоит 0, что означает позицию рядом со свинкой
                     player_one[row][column] = 1
-                    check_around(player_one, row, column)
-                    print("Click ", end_pos, "Grid coordinates: ", row, column)
+                    check_around(player_one, row, column)  # окружает свинку ноликами (это видно в терминальной матрице)
+                    print("Click ", end_pos, "Grid coordinates: ", row, column)  # просто выводит позицию мышки и строку со столбцом в матрице (можно убрать)
                     # modules.show_matrix(player_one)
-                    svins1_pos[svins1_pos_num] = (1100, 0)
-                    modules.show_matrix(player_one)
+                    svins1_pos[svins1_pos_num] = (1100, 0)  # свинка улетает за экран
+                    modules.show_matrix(player_one)  # для дебага - выводит консольную матрицу
                     if svins1_pos_num < 4:
-                        svins1_pos_num += 1
-                    if svins1_pos_num == 4:
+                        svins1_pos_num += 1  # увеличиваем счетчик кол-ва одинарных свиней на поле
+                    if svins1_pos_num == 4:  # переводит нас на след условие, если все свиньи расставлены
                         continue
 
         # двойные свиньи
@@ -127,13 +125,13 @@ while run:
                 if event.button == 1:  # левая кнопка мыши
                     doMove = True
                     up_after_down = False
-                elif event.button == 3:
-                    if angle_svin2 == 360:
-                        angle_svin2 = 90
+                elif event.button == 3:  # поворот свиньи
+                    if angle_svin2 == 360:  # andle - градус поворота
+                        angle_svin2 = 90  # сделано для упрощения написания условия с градусами поворота (см далее)
                     else:
                         angle_svin2 += 90
-                    rotated_svin2 = pygame.transform.rotate(svin2, angle_svin2)
-                    rotated_svin2_bool = True
+                    rotated_svin2 = pygame.transform.rotate(svin2, angle_svin2)  # поворот свиньи на определенный градус
+                    rotated_svin2_bool = True  # показывает, что свинья была повернута (нужно для корректного вывода картинки)
             if event.type == pygame.MOUSEBUTTONUP:
                 doMove = False
                 if event.button == 1:
@@ -143,7 +141,7 @@ while run:
                 svins2_pos[svins2_pos_num] = event.pos
 
             if up_after_down:
-                svin2_mass = []
+                svin2_mass = []  # массив с перевернутыми и неперевернутыми свиньями
                 end_pos = event.pos
                 # User clicks the mouse. Get the position
                 # Change the x/y screen coordinates to grid coordinates
@@ -151,9 +149,9 @@ while run:
                 row = (end_pos[1] - 200) // (HEIGHT + MARGIN)
                 # Set that location to one
                 if player_one[row][column] != 1 and player_one[row][column] != 0:
-                    if angle_svin2 % 180 == 0 or angle_svin2 % 360 == 0:
-                        if column + 1 <= 9:
-                            if player_one[row][column + 1] != 1 and player_one[row][column + 1] != 0:
+                    if angle_svin2 % 180 == 0 or angle_svin2 % 360 == 0:  # проверка того, в какую сторону заполнять матрицу (вправо или вниз)
+                        if column + 1 <= 9:  # для избежания ошибки index out of range
+                            if player_one[row][column + 1] != 1 and player_one[row][column + 1] != 0:  # проверка всех частей тела свинью на близость к другим свинбям
                                 player_one[row][column] = 1
                                 check_around(player_one, row, column)
                                 player_one[row][column + 1] = 1
@@ -362,9 +360,10 @@ while run:
 
 
 
-    color_line = [80, 80, 80]
+    color_line = [80, 80, 80]  # цвет линий между клетками
 
-    screen.fill([255, 255, 255])
+    screen.fill([255, 255, 255])  # цвет заднего фона
+    # создание сеточки из серых линий
     for y_offset in range(0, 200, 20):
         pygame.draw.line(screen, [80, 80, 80], [140, 200 + y_offset], [340, 200 + y_offset], 2)
         pygame.draw.line(screen, [80, 80, 80], [140 + y_offset, 200], [140 + y_offset, 400], 2)
@@ -376,18 +375,21 @@ while run:
     pygame.draw.line(screen, [80, 80, 80], [660, 400], [860, 400], 2)
     pygame.draw.line(screen, [80, 80, 80], [860, 200], [860, 400], 2)
 
+    # прорисовка квадратиков матрицы
     for row in range(10):
         for column in range(10):
             color = (5, 40, 120)
             pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 660, (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
 
+    # вывод свиней на самом поле
+    # вывод одинарной свинки
     for row in range(10):
         for column in range(10):
             color = (5, 40, 120)
-            if player_one[row][column] == 1:
+            if player_one[row][column] == 1:  # если есть единичка на поле, выводится свинка
                 end_pos = [(MARGIN + WIDTH) * column + MARGIN + 141, (MARGIN + HEIGHT) * row + MARGIN + 201, WIDTH, HEIGHT]
                 screen.blit(svin1, end_pos)
-            else:
+            else:  # иначе выводит пустой квадратик
                 pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 140, (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
 
     # вывод двойных свиней
@@ -402,6 +404,7 @@ while run:
     for i in range(svins4_pos_num):
         screen.blit(svins4_rotate[i][0], svins4_rotate[i][1])
 
+    # вывод свиней под полем снизу
     # Свиньи одинарные
     for i in range(4):
         screen.blit(svin1, svins1_pos[i])
