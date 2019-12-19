@@ -703,8 +703,8 @@ while run:  # основной цикл игры
                                         player_two_ready = True
                                         continue
 
-        if player_two_ready:
-            
+        # if player_two_ready:
+
 
 
     color_line = [80, 80, 80]  # цвет линий между клетками
