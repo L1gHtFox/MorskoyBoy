@@ -1,5 +1,6 @@
 import pygame
 import modules
+import random
 
 player_one = []
 player_two = []
@@ -335,7 +336,33 @@ while run:  # основной цикл игры
                                     if svins4_pos_num < 1:
                                         svins4_pos_num += 1
                                     if svins4_pos_num == 1:
+                                        svins1_pos_num = 0
+                                        svins1_pos = [svin1_pos, svin1_pos, svin1_pos, svin1_pos]
+
+                                        svins2_rotate = []  # массив с перевернутыми свиньями
+                                        svins2_pos_num = 0
+                                        svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
+                                        rotated_svin2 = pygame.transform.rotate(svin2,
+                                                                                0)  # переменная с поворотом свиньи (по дефолту 0 градусов)
+                                        rotated_svin2_bool = False  # показывает, повернута ли свинья
+                                        angle_svin2 = 0  # градусы поворота свиньи
+
+                                        svins3_rotate = []
+                                        svins3_pos_num = 0
+                                        svins3_pos = [svin3_pos, svin3_pos]
+                                        rotated_svin3 = pygame.transform.rotate(svin3, 0)
+                                        rotated_svin3_bool = False
+                                        angle_svin3 = 0  # градусы поворота свиньи
+
+                                        svins4_rotate = []
+                                        svins4_pos_num = 0
+                                        svins4_pos = [svin4_pos]
+                                        rotated_svin4 = pygame.transform.rotate(svin3, 0)
+                                        rotated_svin4_bool = False
+                                        angle_svin4 = 0  # градусы поворота свиньи
+
                                         player_one_ready = True
+                                        continue
                         elif angle_svin4 % 90 == 0 or angle_svin4 % 270 == 0:
                             if row + 1 <= 9 and row + 2 <= 9 and row + 3 <= 9:
                                 if player_one[row + 1][column] != 1 and player_one[row + 1][column] != 0 and player_one[row + 2][column] != 1 and player_one[row + 2][column] != 0 and player_one[row + 3][column] != 1 and player_one[row + 3][column] != 0:
@@ -358,36 +385,36 @@ while run:  # основной цикл игры
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
                                     # modules.show_matrix(player_one)
                                     svins4_pos[svins4_pos_num] = (1100, 0)
-                    if svins4_pos_num < 1:
-                        svins4_pos_num += 1
-                    if svins4_pos_num == 1:
-                        svins1_pos_num = 0
-                        svins1_pos = [svin1_pos, svin1_pos, svin1_pos, svin1_pos]
+                                    if svins4_pos_num < 1:
+                                        svins4_pos_num += 1
+                                    if svins4_pos_num == 1:
+                                        svins1_pos_num = 0
+                                        svins1_pos = [svin1_pos, svin1_pos, svin1_pos, svin1_pos]
 
-                        svins2_rotate = []  # массив с перевернутыми свиньями
-                        svins2_pos_num = 0
-                        svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
-                        rotated_svin2 = pygame.transform.rotate(svin2,
-                                                                0)  # переменная с поворотом свиньи (по дефолту 0 градусов)
-                        rotated_svin2_bool = False  # показывает, повернута ли свинья
-                        angle_svin2 = 0  # градусы поворота свиньи
+                                        svins2_rotate = []  # массив с перевернутыми свиньями
+                                        svins2_pos_num = 0
+                                        svins2_pos = [svin2_pos, svin2_pos, svin2_pos]
+                                        rotated_svin2 = pygame.transform.rotate(svin2,
+                                                                                0)  # переменная с поворотом свиньи (по дефолту 0 градусов)
+                                        rotated_svin2_bool = False  # показывает, повернута ли свинья
+                                        angle_svin2 = 0  # градусы поворота свиньи
 
-                        svins3_rotate = []
-                        svins3_pos_num = 0
-                        svins3_pos = [svin3_pos, svin3_pos]
-                        rotated_svin3 = pygame.transform.rotate(svin3, 0)
-                        rotated_svin3_bool = False
-                        angle_svin3 = 0  # градусы поворота свиньи
+                                        svins3_rotate = []
+                                        svins3_pos_num = 0
+                                        svins3_pos = [svin3_pos, svin3_pos]
+                                        rotated_svin3 = pygame.transform.rotate(svin3, 0)
+                                        rotated_svin3_bool = False
+                                        angle_svin3 = 0  # градусы поворота свиньи
 
-                        svins4_rotate = []
-                        svins4_pos_num = 0
-                        svins4_pos = [svin4_pos]
-                        rotated_svin4 = pygame.transform.rotate(svin3, 0)
-                        rotated_svin4_bool = False
-                        angle_svin4 = 0  # градусы поворота свиньи
+                                        svins4_rotate = []
+                                        svins4_pos_num = 0
+                                        svins4_pos = [svin4_pos]
+                                        rotated_svin4 = pygame.transform.rotate(svin3, 0)
+                                        rotated_svin4_bool = False
+                                        angle_svin4 = 0  # градусы поворота свиньи
 
-                        player_one_ready = True
-                        continue
+                                        player_one_ready = True
+                                        continue
 
         if player_one_ready:
             # одинарные свиньи
@@ -586,7 +613,7 @@ while run:  # основной цикл игры
                                     if svins3_pos_num == 2:
                                         continue
 
-            # тройные свиньи
+            # квадро свиньи
             if (svins3_pos_num == 2) and (svins4_pos_num < 1):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # левая кнопка мыши
@@ -644,7 +671,8 @@ while run:  # основной цикл игры
                                     if svins4_pos_num < 1:
                                         svins4_pos_num += 1
                                     if svins4_pos_num == 1:
-                                        player_one_ready = True
+                                        player_two_ready = True
+                                        continue
                         elif angle_svin4 % 90 == 0 or angle_svin4 % 270 == 0:
                             if row + 1 <= 9 and row + 2 <= 9 and row + 3 <= 9:
                                 if player_two[row + 1][column] != 1 and player_two[row + 1][column] != 0 and \
@@ -673,6 +701,10 @@ while run:  # основной цикл игры
                                         svins4_pos_num += 1
                                     if svins4_pos_num == 1:
                                         player_two_ready = True
+                                        continue
+
+        if player_two_ready:
+            
 
 
     color_line = [80, 80, 80]  # цвет линий между клетками
@@ -720,7 +752,7 @@ while run:  # основной цикл игры
             screen.blit(svins3_rotate[i][0], svins3_rotate[i][1])
 
         # вывод квадро свиней
-        for i in range(svins4_pos_num):
+        for i in range(svins4_pos_num - 1):
             screen.blit(svins4_rotate[i][0], svins4_rotate[i][1])
 
         # вывод свиней под полем снизу
@@ -818,7 +850,7 @@ while run:  # основной цикл игры
                 screen.blit(rotated_svin4, svins4_pos[svins4_pos_num])
 
         # Поле закрывается после ввода кораблей
-        if player_two_ready == True:
+        if player_two_ready:
             for y_offset in range(0, 200, 20):
                 pygame.draw.line(screen, [80, 80, 80], [660, 200 + y_offset], [860, 200 + y_offset], 2)
                 pygame.draw.line(screen, [80, 80, 80], [660 + y_offset, 200], [660 + y_offset, 400], 2)
