@@ -4,6 +4,8 @@ import random
 
 player_one = []
 player_two = []
+player_one_svins = []
+player_two_svins = []
 modules.zer_matrix(player_one)
 modules.zer_matrix(player_two)
 
@@ -436,6 +438,7 @@ while run:  # основной цикл игры
                                         rotated_svin4_bool = False
                                         angle_svin4 = 0  # градусы поворота свиньи
 
+                                        up_after_down = False
                                         player_one_ready = True
                                         continue
                         elif angle_svin4 % 90 == 0 or angle_svin4 % 270 == 0:
@@ -496,6 +499,7 @@ while run:  # основной цикл игры
                                         rotated_svin4_bool = False
                                         angle_svin4 = 0  # градусы поворота свиньи
 
+                                        up_after_down = False
                                         player_one_ready = True
                                         continue
 
@@ -547,6 +551,7 @@ while run:  # основной цикл игры
                             angle_svin2 += 90
                         rotated_svin2 = pygame.transform.rotate(svin2,
                                                                 angle_svin2)  # поворот свиньи на определенный градус
+                        rotated_msvin2 = pygame.transform.rotate(msvin2, angle_svin2)
                         rotated_svin2_bool = True  # показывает, что свинья была повернута (нужно для корректного вывода картинки)
                 if event.type == pygame.MOUSEBUTTONUP:
                     doMove = False
@@ -580,6 +585,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin2_mass.append(end_pos)
                                     svins2_rotate.append(svin2_mass)
+                                    p2_msvins2_rotate.append([rotated_msvin2, end_pos])
 
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
                                     # modules.show_matrix(player_one)
@@ -603,6 +609,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin2_mass.append(end_pos)
                                     svins2_rotate.append(svin2_mass)
+                                    p2_msvins2_rotate.append([rotated_msvin2, end_pos])
 
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
                                     # modules.show_matrix(player_one)
@@ -625,6 +632,7 @@ while run:  # основной цикл игры
                         else:
                             angle_svin3 += 90
                         rotated_svin3 = pygame.transform.rotate(svin3, angle_svin3)
+                        rotated_msvin3 = pygame.transform.rotate(msvin3, angle_svin3)
                         rotated_svin3_bool = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     doMove = False
@@ -661,6 +669,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin3_mass.append(end_pos)
                                     svins3_rotate.append(svin3_mass)
+                                    p2_msvins3_rotate.append([rotated_msvin3, end_pos])
 
                                     modules.show_matrix(player_two)
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
@@ -686,6 +695,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin3_mass.append(end_pos)
                                     svins3_rotate.append(svin3_mass)
+                                    p2_msvins3_rotate.append([rotated_msvin3, end_pos])
 
                                     modules.show_matrix(player_two)
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
@@ -708,6 +718,7 @@ while run:  # основной цикл игры
                         else:
                             angle_svin4 += 90
                         rotated_svin4 = pygame.transform.rotate(svin4, angle_svin4)
+                        rotated_msvin4 = pygame.transform.rotate(msvin4, angle_svin4)
                         rotated_svin4_bool = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     doMove = False
@@ -747,6 +758,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin4_mass.append(end_pos)
                                     svins4_rotate.append(svin4_mass)
+                                    p2_msvins4_rotate.append([rotated_msvin4, end_pos])
 
                                     modules.show_matrix(player_two)
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
@@ -776,6 +788,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin4_mass.append(end_pos)
                                     svins4_rotate.append(svin4_mass)
+                                    p2_msvins4_rotate.append([rotated_msvin4, end_pos])
 
                                     modules.show_matrix(player_two)
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
@@ -990,15 +1003,55 @@ while run:  # основной цикл игры
 
         # Поле закрывается после ввода кораблей
         if player_two_ready:
+
+            # отрисовка мертвых свиней перед закрытием поля
+            # вывод одинарной свинки
+            for row in range(10):
+                for column in range(10):
+                    color = (5, 40, 120)
+                    if player_two[row][column] == 1:  # если есть единичка на поле, выводится свинка
+                        end_pos = [(MARGIN + WIDTH) * column + MARGIN + 661, (MARGIN + HEIGHT) * row + MARGIN + 201,
+                                   WIDTH,
+                                   HEIGHT]
+                        pygame.draw.rect(screen, color,
+                                         [(MARGIN + WIDTH) * column + MARGIN + 660,
+                                          (MARGIN + HEIGHT) * row + MARGIN + 200,
+                                          WIDTH, HEIGHT])
+                        screen.blit(msvin1, end_pos)
+                    else:  # иначе выводит пустой квадратик
+                        pygame.draw.rect(screen, color,
+                                         [(MARGIN + WIDTH) * column + MARGIN + 660,
+                                          (MARGIN + HEIGHT) * row + MARGIN + 200,
+                                          WIDTH, HEIGHT])
+
+            # вывод двойных свиней
+            for i in range(3):
+                screen.blit(p2_msvins2_rotate[i][0], p2_msvins2_rotate[i][1])
+
+            # вывод тройных свиней
+            for i in range(2):
+                screen.blit(p2_msvins3_rotate[i][0], p2_msvins3_rotate[i][1])
+
+            # вывод квадро свиней
+            for i in range(1):
+                screen.blit(p2_msvins4_rotate[i][0], p2_msvins4_rotate[i][1])
+
             for y_offset in range(0, 200, 20):
                 pygame.draw.line(screen, [80, 80, 80], [660, 200 + y_offset], [860, 200 + y_offset], 2)
                 pygame.draw.line(screen, [80, 80, 80], [660 + y_offset, 200], [660 + y_offset, 400], 2)
             pygame.draw.line(screen, [80, 80, 80], [660, 400], [860, 400], 2)
             pygame.draw.line(screen, [80, 80, 80], [860, 200], [860, 400], 2)
+
             for row in range(10):
                 for column in range(10):
-                    color = (5, 40, 120)
-                    pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 660, (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
+                    if (row, column) not in player_one_shots:
+                        color = (5, 40, 120)
+                        pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 660,
+                                                         (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
+                    if (row, column) in player_one_misses:
+                        screen.blit(promah,
+                                    [(MARGIN + WIDTH) * column + MARGIN + 661, (MARGIN + HEIGHT) * row + MARGIN + 201,
+                                     WIDTH, HEIGHT])
 
             screen.blit(strelka, strelka_pos)
 
