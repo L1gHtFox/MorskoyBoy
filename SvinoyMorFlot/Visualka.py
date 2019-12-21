@@ -9,6 +9,8 @@ player_two_svins = []
 modules.zer_matrix(player_one)
 modules.zer_matrix(player_two)
 
+game_end = False
+
 pygame.init()
 
 screen = pygame.display.set_mode([1000, 700])  # создание окна
@@ -799,7 +801,7 @@ while run:  # основной цикл игры
                                                HEIGHT]
                                     svin4_mass.append(end_pos)
                                     svins4_rotate.append(svin4_mass)
-                                    p2_msvins4_rotate.append([rotated_msvin4, end_pos, [(row, column), (row + 1, column), (row + 1, column), (row + 1, column)]])
+                                    p2_msvins4_rotate.append([rotated_msvin4, end_pos, [(row, column), (row + 1, column), (row + 2, column), (row + 3, column)]])
 
                                     modules.show_matrix(player_two)
                                     print("Click ", end_pos, "Grid coordinates: ", row, column)
@@ -810,7 +812,7 @@ while run:  # основной цикл игры
                                         player_two_ready = True
                                         continue
 
-        if player_two_ready:
+        if player_two_ready and game_end == False:
             if player_one_step:
                 if shoot(1, player_two, player_one_shots, player_one_misses) == 1:
                     print('shots', player_one_shots)
@@ -960,7 +962,7 @@ while run:  # основной цикл игры
         # вывод одинарных свиней
         for i in range(len(p1_svins1_mtrx_pos)):
             if p1_svins1_mtrx_pos[i] in player_two_shots:
-                screen.blit(msvin1, [(MARGIN + WIDTH) * p1_svins1_mtrx_pos[i][0] + MARGIN + 141, (MARGIN + HEIGHT) * p1_svins1_mtrx_pos[i][1] + MARGIN + 201,
+                screen.blit(msvin1, [(MARGIN + WIDTH) * p1_svins1_mtrx_pos[i][1] + MARGIN + 141, (MARGIN + HEIGHT) * p1_svins1_mtrx_pos[i][0] + MARGIN + 201,
                                  WIDTH, HEIGHT])
 
         # вывод двойных свиней
@@ -1066,17 +1068,17 @@ while run:  # основной цикл игры
                                           (MARGIN + HEIGHT) * row + MARGIN + 200,
                                           WIDTH, HEIGHT])
 
-            # вывод двойных свиней
-            for i in range(3):
-                screen.blit(p2_msvins2_rotate[i][0], p2_msvins2_rotate[i][1])
-
-            # вывод тройных свиней
-            for i in range(2):
-                screen.blit(p2_msvins3_rotate[i][0], p2_msvins3_rotate[i][1])
-
-            # вывод квадро свиней
-            for i in range(1):
-                screen.blit(p2_msvins4_rotate[i][0], p2_msvins4_rotate[i][1])
+            # # вывод двойных свиней
+            # for i in range(3):
+            #     screen.blit(p2_msvins2_rotate[i][0], p2_msvins2_rotate[i][1])
+            #
+            # # вывод тройных свиней
+            # for i in range(2):
+            #     screen.blit(p2_msvins3_rotate[i][0], p2_msvins3_rotate[i][1])
+            #
+            # # вывод квадро свиней
+            # for i in range(1):
+            #     screen.blit(p2_msvins4_rotate[i][0], p2_msvins4_rotate[i][1])
 
             for y_offset in range(0, 200, 20):
                 pygame.draw.line(screen, [80, 80, 80], [660, 200 + y_offset], [860, 200 + y_offset], 2)
@@ -1103,8 +1105,8 @@ while run:  # основной цикл игры
             # вывод одинарных свиней
             for i in range(len(p2_svins1_mtrx_pos)):
                 if p2_svins1_mtrx_pos[i] in player_one_shots:
-                    screen.blit(msvin1, [(MARGIN + WIDTH) * p2_svins1_mtrx_pos[i][0] + MARGIN + 661,
-                                         (MARGIN + HEIGHT) * p2_svins1_mtrx_pos[i][1] + MARGIN + 201,
+                    screen.blit(msvin1, [(MARGIN + WIDTH) * p2_svins1_mtrx_pos[i][1] + MARGIN + 661,
+                                         (MARGIN + HEIGHT) * p2_svins1_mtrx_pos[i][0] + MARGIN + 201,
                                          WIDTH, HEIGHT])
 
             # вывод двойных свиней
@@ -1136,6 +1138,27 @@ while run:  # основной цикл игры
 
 
             screen.blit(strelka, strelka_pos)
+
+    p1_win = 0
+    p2_win = 0
+    for i in range(10):
+        for j in range(10):
+            if (i, j) in player_one_shots:
+                p1_win += 1
+            if (i, j) in player_two_shots:
+                p2_win += 1
+            if p1_win == 20:
+                p1_win_font = pygame.font.Font(None, 50)
+                p1_win_text = p1_win_font.render('Player 1 Win!!!', 1, (180, 0, 0))
+                game_end = True
+                screen.blit(p1_win_text, (380, 100))
+            elif p2_win == 20:
+                p2_win_font = pygame.font.Font(None, 50)
+                p2_win_text = p2_win_font.render('Player 2 Win!!!', 1, (180, 0, 0))
+                game_end = True
+                screen.blit(p2_win_text, (380, 100))
+
+
 
     pygame.display.update()
 
