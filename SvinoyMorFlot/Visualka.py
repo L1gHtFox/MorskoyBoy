@@ -942,28 +942,28 @@ while run:  # основной цикл игры
                     screen.blit(p1_msvins4_rotate[i][0], p1_msvins4_rotate[i][1])
 
         # второй игрок
-        # вывод свиней на самом поле
-        # вывод одинарной свинки
-        for row in range(10):
-            for column in range(10):
-                color = (5, 40, 120)
-                if player_two[row][column] == 1:  # если есть единичка на поле, выводится свинка
-                    end_pos = [(MARGIN + WIDTH) * column + MARGIN + 661, (MARGIN + HEIGHT) * row + MARGIN + 201, WIDTH, HEIGHT]
-                    screen.blit(svin1, end_pos)
-                else:  # иначе выводит пустой квадратик
-                    pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 660, (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
-
-        # вывод двойных свиней
-        for i in range(svins2_pos_num):
-            screen.blit(svins2_rotate[i][0], svins2_rotate[i][1])
-
-        # вывод тройных свиней
-        for i in range(svins3_pos_num):
-            screen.blit(svins3_rotate[i][0], svins3_rotate[i][1])
-
-        # вывод квадро свиней
-        for i in range(svins4_pos_num):
-            screen.blit(svins4_rotate[i][0], svins4_rotate[i][1])
+        # # вывод свиней на самом поле
+        # # вывод одинарной свинки
+        # for row in range(10):
+        #     for column in range(10):
+        #         color = (5, 40, 120)
+        #         if player_two[row][column] == 1:  # если есть единичка на поле, выводится свинка
+        #             end_pos = [(MARGIN + WIDTH) * column + MARGIN + 661, (MARGIN + HEIGHT) * row + MARGIN + 201, WIDTH, HEIGHT]
+        #             screen.blit(svin1, end_pos)
+        #         else:  # иначе выводит пустой квадратик
+        #             pygame.draw.rect(screen, color, [(MARGIN + WIDTH) * column + MARGIN + 660, (MARGIN + HEIGHT) * row + MARGIN + 200, WIDTH, HEIGHT])
+        #
+        # # вывод двойных свиней
+        # for i in range(svins2_pos_num):
+        #     screen.blit(svins2_rotate[i][0], svins2_rotate[i][1])
+        #
+        # # вывод тройных свиней
+        # for i in range(svins3_pos_num):
+        #     screen.blit(svins3_rotate[i][0], svins3_rotate[i][1])
+        #
+        # # вывод квадро свиней
+        # for i in range(svins4_pos_num):
+        #     screen.blit(svins4_rotate[i][0], svins4_rotate[i][1])
 
         # вывод свиней под полем снизу
         # Свиньи одинарные
