@@ -4,8 +4,6 @@ import random
 
 player_one = []
 player_two = []
-player_one_svins = []
-player_two_svins = []
 modules.zer_matrix(player_one)
 modules.zer_matrix(player_two)
 
@@ -95,17 +93,11 @@ player_two_misses = []
 
 player_one_ready = False  # если тру - то матрица закрывается (после расстановки всех свиней первым игроком)
 player_two_ready = False
-# player_two_reload = False  # обнуление параметров свиней для второго игрока
 
 clock = pygame.time.Clock()
 run = True  # заставляет главный цикл игры работать (если фолс, то игра вырубается)
 
 doMove = False  # переменная, отвечающая за перемещение мыши
-
-# mass_of_nums = []
-# for i in range(10):
-#     for j in range(10):
-#         mass_of_nums.append((i, j))
 
 def check_around(matrix, row, col):  # функция, которая окружает свинку нулями, чтобы нельзя было ставить рядом других свиней
     if row - 1 >= 0 and col - 1 >= 0:
@@ -133,6 +125,7 @@ def check_around(matrix, row, col):  # функция, которая окруж
         if matrix[row][col - 1] != 1:
             matrix[row][col - 1] = 0
 
+# функция, которая отслеживает выстрел (нажатие на поле)
 def shoot(num, matrix, shots, misses):
     hit_true = 2  # функцуия не выполнилась
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -156,6 +149,7 @@ def shoot(num, matrix, shots, misses):
 
     return hit_true
 
+# функция, котрая позволяет ии стрелять (просто рандомно выбирает квадратик матрицы, в который ии еще не стрелял)
 def shoot_ii(num, matrix, shots, misses):
     hit_true = 2  # функцуия не выполнилась
     column = random.randint(0, 9)
@@ -190,8 +184,9 @@ while run:  # основной цикл игры
         if event.type == pygame.QUIT:  # если нажимаешь на крестик, игра закрывается (без этого условия на крестик не закроется)
             run = False
 
-        # одинарные свиньи
+        # расстановка свиней певым игроком
         if player_one_ready == False:
+            # одинарные свиньи
             if svins1_pos_num < 4:
                 if event.type == pygame.MOUSEBUTTONDOWN:  # кнопка мыши нажата
                     if event.button == 1:  # левая кнопка мыши
@@ -538,6 +533,7 @@ while run:  # основной цикл игры
                                         player_one_ready = True
                                         continue
 
+        # расстановка свиней вторым игроком
         if player_one_ready:
             # одинарные свиньи
             if svins1_pos_num < 4:
@@ -760,6 +756,7 @@ while run:  # основной цикл игры
                                     player_two_ready = True
                                     continue
 
+        # основной ход игры (выполняется, когда оба игрока расставили свиней)
         if player_two_ready and game_end == False:
             if player_one_step:
                 if shoot(1, player_two, player_one_shots, player_one_misses) == 1:
@@ -1088,6 +1085,7 @@ while run:  # основной цикл игры
 
             screen.blit(strelka, strelka_pos)
 
+    # проверка на то, все ли свиньи были убиты (если у одного из игроков все свиньи умерли, выводится победа другого игрока)
     p1_win = 0
     p2_win = 0
     for i in range(10):
